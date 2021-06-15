@@ -1,0 +1,3 @@
+FLASK_APP = fetcher_app.py
+FLASK_RUN_PORT=5000
+FLASK_DEBUG=1
