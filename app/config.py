@@ -9,4 +9,4 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'prod_application.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    YOUTUBE_DATA_API_KEY = 'your-api-key'
+    YOUTUBE_DATA_API_KEY = 'add_your_api_key'

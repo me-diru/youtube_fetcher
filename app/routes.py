@@ -3,22 +3,7 @@ from .models import *
 from flask import request, jsonify, Response
 from datetime import datetime
 from .util import get_youtube_videos_in_interval
-from sqlalchemy import or_
-
-
-@app.route('/', methods=['GET'])
-async def test():
-    youtube_videos = await get_youtube_videos_in_interval()
-    print(youtube_videos)
-    async for youtube_video in youtube_videos:
-        for data in youtube_video:
-            print(data, '\n\n')
-        print(datetime.now())
-
-    return Response(
-        mimetype='application/json',
-        status=200
-    )
+from sqlalchemy import or_, and_
 
 
 @app.route('/v1/fetch_stored_youtube_videos', methods=['GET'])
@@ -43,7 +28,7 @@ def fetch_youtube_videos():
 def search_data():
     ''' 
         This API endpoint seaches the relevant Youtube videos wrt their
-        Title and Description names 
+        Title or Description names 
     '''
     input_data = request.args
 

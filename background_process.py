@@ -8,6 +8,10 @@ db.create_all()
 
 
 async def run():
+    '''
+        Background process which runs asynchrously to get latest youtube videos 
+        based on pre-set search query        
+    '''
     youtube_videos = await get_youtube_videos_in_interval()
 
     async for youtube_video in youtube_videos:
@@ -15,10 +19,12 @@ async def run():
 
             video_present = YoutubeVideo.query.filter_by(
                 title=data['title']).first()
+            # skipping if already stored in database
             if not video_present:
                 temp_video = YoutubeVideo()
                 temp_video.title = data['title']
                 temp_video.description = data['description']
+                # converting into datetime object to make it consistant
                 temp_video.publish_date = datetime.strptime(
                     data['publish_date'], '%Y-%m-%dT%H:%M:%SZ')
                 temp_video.thumbnail_url_default = data['thumbnail_url_default']

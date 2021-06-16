@@ -4,6 +4,9 @@ import asyncio
 
 
 async def get_youtube_videos_in_interval(given_interval=100):
+    '''
+        This function fetches latest youtube video details related to cricket
+    '''
 
     async def call_data():
 
@@ -14,8 +17,12 @@ async def get_youtube_videos_in_interval(given_interval=100):
                 request = youtube.search().list(
                     part='snippet',
                     type='video',
+                    # this is search string which gets us the results
                     q='cricket',
                     order='date',
+                    # considering our end users who are below 18 :)
+                    safeSearch='moderate',
+                    # limiting to 50 as no quantity is mentioned
                     maxResults=50
                 )
 
@@ -36,8 +43,8 @@ async def get_youtube_videos_in_interval(given_interval=100):
 
                 yield captured_data
                 await asyncio.sleep(given_interval)
-            except:
-                print('API key has been exhausted, renew it please')
+            except Exception as ex:
+                print(ex.__class__.__doc__)
                 exit(1)
 
     return call_data()

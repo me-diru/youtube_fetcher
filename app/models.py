@@ -1,9 +1,8 @@
 from app import db
 
-# Creating db models by taking advantage of already loaded tables in database
-
 
 class YoutubeVideo(db.Model):
+    # youtube video model to store data in a structured format in the database
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text())
     description = db.Column(db.Text())
