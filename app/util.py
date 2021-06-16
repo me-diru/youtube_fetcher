@@ -1,6 +1,7 @@
 from . import api_key
 from googleapiclient.discovery import build
 import asyncio
+from os import abort
 
 
 async def get_youtube_videos_in_interval(given_interval=100):
@@ -48,3 +49,40 @@ async def get_youtube_videos_in_interval(given_interval=100):
                 exit(1)
 
     return call_data()
+
+
+def get_paginated_list(klass, url, start, limit):
+    # check if page exists
+    youtube_videos_data = youtube_videos_data = klass.query.order_by(
+        klass.publish_date.desc()).all()
+    results = list()
+    for youtube_video_data in youtube_videos_data:
+        youtube_video_data = youtube_video_data.__dict__
+        del youtube_video_data['_sa_instance_state']
+        results.append(youtube_video_data)
+
+    count = len(results)
+    if (count < start):
+        abort(404)
+    # make response
+    obj = {}
+    obj['start'] = start
+    obj['limit'] = limit
+    obj['count'] = count
+    # make URLs
+    # make previous url
+    if start == 1:
+        obj['previous'] = ''
+    else:
+        start_copy = max(1, start - limit)
+        limit_copy = start - 1
+        obj['previous'] = url + '?start=%d&limit=%d' % (start_copy, limit_copy)
+    # make next url
+    if start + limit > count:
+        obj['next'] = ''
+    else:
+        start_copy = start + limit
+        obj['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
+    # finally extract result according to bounds
+    obj['results'] = results[(start - 1):(start - 1 + limit)]
+    return obj

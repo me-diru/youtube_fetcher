@@ -26,7 +26,7 @@ The API comes with two endpoints:
 - ```/v1/fetch_stored_youtube_videos``` to get which returns the stored video data in a paginated response sorted in descending order of published datetime.
     - Test using, by default gives 5 response
     ``` 
-    curl http://localhost:5000/v1/fetch_stored_youtube_videos
+    curl http://localhost:5000/v1/fetch_stored_youtube_videos?start=4
 
     ```
     - Output: ![](images/fetch_youtube_videos.png)

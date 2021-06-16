@@ -2,7 +2,7 @@ from . import app, db
 from .models import *
 from flask import request, jsonify, Response
 from datetime import datetime
-from .util import get_youtube_videos_in_interval
+from .util import get_paginated_list
 from sqlalchemy import or_, and_
 
 
@@ -12,16 +12,13 @@ def fetch_youtube_videos():
         A GET API which returns the stored video data in a paginated 
         response sorted in descending order of published datetime.
     '''
-    youtube_videos_data = YoutubeVideo.query.order_by(
-        YoutubeVideo.publish_date.desc()).paginate(1, 5, False).items
 
-    result_data = list()
-    for youtube_video_data in youtube_videos_data:
-        youtube_video_data = youtube_video_data.__dict__
-        del youtube_video_data['_sa_instance_state']
-        result_data.append(youtube_video_data)
-
-    return jsonify(result_data)
+    return jsonify(get_paginated_list(
+        YoutubeVideo,
+        '/api/v2/events/page',
+        start=int(request.args.get('start', 1)),
+        limit=int(request.args.get('limit', 5))
+    ))
 
 
 @app.route('/v1/search', methods=['GET'])
