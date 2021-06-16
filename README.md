@@ -12,6 +12,12 @@ an API to fetch latest videos sorted in reverse chronological order of their pub
 - **NOTE:** Specify your own API key if limit reaches
 
 
+## Docker 
+If using docker, follow the steps below
+- To build, ```docker build -t youtube-fetcher .```
+
+- To run, ```docker run -p 5000:5000 -p 8000:8000 youtube-fetcher```
+
 ## Checking application 
 
 
@@ -21,7 +27,7 @@ The API comes with two endpoints:
     - Test using, by default gives 5 response
     ``` 
     curl http://localhost:5000/v1/fetch_stored_youtube_videos
-    
+
     ```
     - Output: ![](images/fetch_youtube_videos.png)
 - ```/v1/search``` To search matching the youtube videos data in the database
